@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { StorageService } from "./localStorage";
 import todoReducer from "./todos/todoSlice";
 
 const store = configureStore({
@@ -8,12 +9,11 @@ const store = configureStore({
     todoData: todoReducer,
   },
   devTools: true,
+  preloadedState: StorageService.getItem("REDUX_STORAGE"),
 });
-type StoreType = ReturnType<typeof store.getState>
-type AppDispatch = typeof store.dispatch
 
-// export const useAppSelector = useSelector<StoreType>
-export const useAppDispatch : () => AppDispatch = useDispatch
+type AppDispatch = typeof store.dispatch;
 
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default store;

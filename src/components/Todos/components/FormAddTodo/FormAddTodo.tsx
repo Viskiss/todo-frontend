@@ -2,21 +2,22 @@ import StylesForm from "./FormAddTodo.styles";
 
 import Button from "../../../Button/Button";
 
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import {todoSliceActions } from "../../../../redux/todos/todoSlice";
+import React, { useState } from "react";
+
+import { todoSliceActions } from "../../../../redux/todos/todoSlice";
 import { useAppDispatch } from "../../../../redux/store";
 
-const FormAddTodo = () => {
+const FormAddTodo: React.FC = () => {
   const [value, setValue] = useState("");
 
   const dispatch = useAppDispatch();
 
-  const submitHandler = () => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const result = value.trim();
 
     if (result !== "") {
-      dispatch(todoSliceActions.addTodo({ todo: value }));
+      dispatch(todoSliceActions.addTodo(value));
     }
 
     setValue("");

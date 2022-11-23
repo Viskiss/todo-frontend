@@ -5,6 +5,11 @@ import GlobalStyles from "./components/GlobalStyles";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { StorageService } from "./redux/localStorage";
+
+store.subscribe(
+  () => StorageService.setItem("REDUX_STORAGE", store.getState())
+)
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

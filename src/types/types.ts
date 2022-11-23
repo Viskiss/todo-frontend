@@ -4,10 +4,11 @@ export type TodoType = {
   completed: boolean;
 };
 
+
 export enum FilterTodoENUM {
   ALL = "ALL",
   ACTIVE = "ACTIVE",
-  COMPLETED ="COMPLETED"
+  COMPLETED = "COMPLETED",
 };
 
 // export type InitialStateTodos = {

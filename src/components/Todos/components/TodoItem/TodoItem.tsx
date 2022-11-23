@@ -1,58 +1,59 @@
 import TodoItemStyles from "./TodoItem.styles";
 import React from "react";
 import Button from "../../../Button/Button";
-import { TodoItem } from "../../../../types/types";
+import { TodoType } from "../../../../types/types";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  completeTodo,
-  deleteTodo,
-  editTodo,
-  todoSliceActions,
-} from "../../../../redux/todos/todoSlice";
+
+import { todoSliceActions } from "../../../../redux/todos/todoSlice";
 import { useAppDispatch } from "../../../../redux/store";
 
-const TodoItem: React.FC<{todo: TodoItem}> = (props) => {
-  // const {
-  //   todo: { id, value, completed },
-  // } = props;
+interface ITodoItem {
+  todo: TodoType;
+}
 
-  const [todoValue, setTodoValue] = useState(props.todo.value);
+const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
+  const [todoValue, setTodoValue] = useState(todo.value);
 
   const dispatch = useAppDispatch();
 
-  const removeTodo = () => {
-    dispatch(todoSliceActions.deleteTodo({ id: props.todo.id }));
+  const removeTodo = (id: number) => {
+    dispatch(todoSliceActions.deleteTodo(id));
   };
 
-  const completedTodo = (id: number) => {
-    dispatch(completeTodo({ id: id, completed: !completed }));
+  const completeTodo = (id: number) => {
+    dispatch(todoSliceActions.completeTodo({ id, completed: !todo.completed }));
   };
 
-  const changeTodo = () => {
+  const changeTodo = (id: number) => {
     if (!todoValue) {
-      dispatch(deleteTodo({ id: id }));
+      dispatch(todoSliceActions.deleteTodo(id));
     } else {
-      dispatch(editTodo({ id: id, value: todoValue, completed: completed }));
+      dispatch(
+        todoSliceActions.editTodo({
+          id,
+          value: todoValue,
+          completed: todo.completed,
+        })
+      );
     }
   };
 
   return (
-    <TodoItemStyles completed={completed}>
+    <TodoItemStyles completed={todo.completed}>
       <input
         className="todo-item_input"
         type="text"
-        id={id}
+        id={todo.id}
         value={todoValue}
-        onBlur={changeTodo}
+        onBlur={() => changeTodo(todo.id)}
         onChange={(event) => setTodoValue(event.target.value)}
       />
       <div className="todo-item_buttons">
-        <Button isActive={false} onClick={() => removeTodo(id)}>
+        <Button isActive={false} onClick={() => removeTodo(todo.id)}>
           Delete
         </Button>
-        <Button isActive={false} onClick={() => completedTodo(id)}>
+        <Button isActive={false} onClick={() => completeTodo(todo.id)}>
           Completed
         </Button>
       </div>
