@@ -3,7 +3,11 @@ import { todoSliceActions } from "../../../../redux/todos/todoSlice";
 import { FilterTodoENUM } from "../../../../types/types";
 import Button from "../../../Button/Button";
 
-const FilterButtons: React.FC = () => {
+interface IFilterButtons {
+  filter: FilterTodoENUM;
+}
+
+const FilterButtons: React.FC<IFilterButtons> = ({ filter }) => {
   const dispatch = useAppDispatch();
 
   const filterTodos = (filterName: FilterTodoENUM) => {
@@ -12,15 +16,17 @@ const FilterButtons: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={() => filterTodos(FilterTodoENUM.ALL)} isActive>
-        {FilterTodoENUM.ALL}
-      </Button>
-      <Button onClick={() => filterTodos(FilterTodoENUM.ACTIVE)} isActive>
-        {FilterTodoENUM.ACTIVE}
-      </Button>
-      <Button onClick={() => filterTodos(FilterTodoENUM.COMPLETED)} isActive>
-        {FilterTodoENUM.COMPLETED}
-      </Button>
+      {(Object.keys(FilterTodoENUM) as (keyof typeof FilterTodoENUM)[]).map(
+        (key) => (
+          <Button
+          key={key}
+            isActive={FilterTodoENUM[key] === filter}
+            onClick={() => filterTodos(FilterTodoENUM[key])}
+          >
+            {key}
+          </Button>
+        )
+      )}
     </div>
   );
 };

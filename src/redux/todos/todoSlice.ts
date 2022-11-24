@@ -19,7 +19,7 @@ export const filterTodosSelector = createSelector(
       }
     });
 
-    return todoList;
+    return { todoList, filter };
   }
 );
 
@@ -60,7 +60,6 @@ const todoSlice = createSlice({
       const index = state.todos.findIndex(
         (item: { id: any }) => item.id === action.payload.id
       );
-
       state.todos[index].completed = action.payload.completed;
     },
 

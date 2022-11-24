@@ -5,10 +5,10 @@ import { StorageService } from "./localStorage";
 import todoReducer from "./todos/todoSlice";
 
 const store = configureStore({
+  devTools: true,
   reducer: {
     todoData: todoReducer,
   },
-  devTools: true,
   preloadedState: StorageService.getItem("REDUX_STORAGE"),
 });
 

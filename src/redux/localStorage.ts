@@ -6,6 +6,6 @@ export class StorageService {
   static getItem<T>(key: string): T {
     const item = localStorage.getItem(key);
 
-    return item ? JSON.parse(item) : undefined;
+    return item ? JSON.parse(item) : null;
   }
 }

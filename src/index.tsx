@@ -8,6 +8,7 @@ import store from "./redux/store";
 import { StorageService } from "./redux/localStorage";
 
 store.subscribe(
+  
   () => StorageService.setItem("REDUX_STORAGE", store.getState())
 )
 
