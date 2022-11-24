@@ -14,7 +14,7 @@ const Todos: React.FC = () => {
     <StyleTodos>
       <div className="container">
         <FormAddTodo />
-        <FilterButtons filter={todos.filter} />
+        <FilterButtons todos={todos.todoList} filter={todos.filter} />
         <ul className="todos-list">
           {todos.todoList.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
