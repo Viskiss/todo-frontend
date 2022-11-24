@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { FilterTodoENUM, TodoType } from "../../types/types";
-import { PayloadAction } from "@reduxjs/toolkit";
 
 export const filterTodosSelector = createSelector(
   (store: { todoData: { todos: TodoType[] } }) => store.todoData.todos,
@@ -19,17 +19,12 @@ export const filterTodosSelector = createSelector(
       }
     });
 
-    return { todoList, filter };
+    return todoList;
   }
 );
 
-interface SliceState {
-  todos: TodoType[];
-  filter: FilterTodoENUM;
-}
-
-const initialState: SliceState = {
-  todos: [],
+const initialState = {
+  todos: [] as TodoType[],
   filter: FilterTodoENUM.ALL,
 };
 
@@ -46,36 +41,29 @@ const todoSlice = createSlice({
       state.todos.push(newTodo);
     },
 
-    deleteTodo: (state, action: PayloadAction<number>) => {
-      const index = state.todos.findIndex(
-        (item: { id: any }) => item.id === action.payload
-      );
+    deleteTodo: (state, { payload }: PayloadAction<number>) => {
+      const index = state.todos.findIndex((item) => item.id === payload);
       state.todos.splice(index, 1);
     },
 
     completeTodo: (
       state,
-      action: PayloadAction<{ id: number; completed: boolean }>
+      { payload }: PayloadAction<{ id: number; completed: boolean }>
     ) => {
-      const index = state.todos.findIndex(
-        (item: { id: any }) => item.id === action.payload.id
-      );
-      state.todos[index].completed = action.payload.completed;
+      const index = state.todos.findIndex((item) => item.id === payload.id);
+      state.todos[index].completed = payload.completed;
     },
 
     editTodo: (
-      state,
-      action: PayloadAction<{ id: number; value: string; completed: boolean }>
+      state,{payload,}: PayloadAction<{ id: number; value: string; completed: boolean }>
     ) => {
-      const index = state.todos.findIndex(
-        (item: { id: any }) => item.id === action.payload.id
-      );
-      state.todos[index].value = action.payload.value;
-      state.todos[index].completed = action.payload.completed;
+      const index = state.todos.findIndex((item) => item.id === payload.id);
+      state.todos[index].value = payload.value;
+      state.todos[index].completed = payload.completed;
     },
 
-    filterTodo: (state, action: PayloadAction<FilterTodoENUM>) => {
-      state.filter = action.payload;
+    filterTodo: (state, {payload}: PayloadAction<FilterTodoENUM>) => {
+      state.filter = payload;
     },
   },
 });

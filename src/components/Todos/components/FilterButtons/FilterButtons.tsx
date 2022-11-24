@@ -4,11 +4,10 @@ import { FilterTodoENUM, TodoType } from "../../../../types/types";
 import Button from "../../../Button/Button";
 
 interface IFilterButtons {
-  filter: FilterTodoENUM;
   todos: TodoType[]
 }
 
-const FilterButtons: React.FC<IFilterButtons> = ({ filter, todos  }) => {
+const FilterButtons: React.FC<IFilterButtons> = ({ todos }) => {
   const dispatch = useAppDispatch();
 
   const filterTodos = (filterName: FilterTodoENUM) => {
