@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.li<{ completed: boolean }>`
   display: flex;
@@ -14,8 +14,7 @@ export default styled.li<{ completed: boolean }>`
     margin-bottom: 10px;
   }
   .todo-item_input {
-    text-decoration: ${({ completed }) =>
-      completed ? "line-through 2px red" : ""};
+    text-decoration: ${({ completed }) => (completed ? 'line-through 2px red' : '')};
   }
   .todo-item_input {
     width: 35%;

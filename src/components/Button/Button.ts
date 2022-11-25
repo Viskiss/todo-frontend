@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Button = styled.button<{ isActive: boolean }>`
   padding: 5px;
@@ -8,7 +8,7 @@ const Button = styled.button<{ isActive: boolean }>`
   font-weight: bold;
   cursor: pointer;
 
-  background-color: ${(props) => (props.isActive ? "thistle" : "#efefef")};
+  background-color: ${(props) => (props.isActive ? 'thistle' : '#efefef')};
 `;
 
 export default Button;

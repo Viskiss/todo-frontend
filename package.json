@@ -24,7 +24,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint . -c .eslintrc.js --quiet --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "./node_modules/.bin/eslint . -c .eslintrc.js --quiet --fix --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +47,10 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-no-inline-styles": "^1.0.5",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-styled-components-config": "^0.0.2"
   }
 }

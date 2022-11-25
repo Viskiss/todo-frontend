@@ -1,12 +1,10 @@
-import TodoItemStyles from "./TodoItem.styles";
-import React from "react";
-import Button from "../../../Button/Button";
-import { TodoType } from "../../../../types/types";
+import React, { useState } from 'react';
+import TodoItemStyles from './TodoItem.styles';
+import Button from '../../../Button/Button';
+import type { TodoType } from '../../../../types/types';
 
-import { useState } from "react";
-
-import { todoSliceActions } from "../../../../redux/todos/todoSlice";
-import { useAppDispatch } from "../../../../redux/store";
+import { todoSliceActions } from '../../../../redux/todos/todoSlice';
+import { useAppDispatch } from '../../../../redux/store';
 
 interface ITodoItem {
   todo: TodoType;
@@ -34,7 +32,7 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
           id,
           value: todoValue,
           completed: todo.completed,
-        })
+        }),
       );
     }
   };

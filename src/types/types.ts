@@ -5,7 +5,7 @@ export type TodoType = {
 };
 
 export enum FilterTodoENUM {
-  ALL = "ALL",
-  ACTIVE = "ACTIVE",
-  COMPLETED = "COMPLETED",
+  ALL = 'ALL',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
 }

@@ -1,14 +1,13 @@
-import StylesForm from "./FormAddTodo.styles";
+import React, { useState } from 'react';
+import StylesForm from './FormAddTodo.styles';
 
-import Button from "../../../Button/Button";
+import Button from '../../../Button/Button';
 
-import React, { useState } from "react";
-
-import { todoSliceActions } from "../../../../redux/todos/todoSlice";
-import { useAppDispatch } from "../../../../redux/store";
+import { todoSliceActions } from '../../../../redux/todos/todoSlice';
+import { useAppDispatch } from '../../../../redux/store';
 
 const FormAddTodo: React.FC = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   const dispatch = useAppDispatch();
 
@@ -16,11 +15,11 @@ const FormAddTodo: React.FC = () => {
     e.preventDefault();
     const result = value.trim();
 
-    if (result !== "") {
+    if (result !== '') {
       dispatch(todoSliceActions.addTodo(value));
     }
 
-    setValue("");
+    setValue('');
   };
 
   return (
