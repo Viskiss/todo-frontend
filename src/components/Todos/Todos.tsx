@@ -1,21 +1,21 @@
-import { useSelector } from 'react-redux';
 import StyleTodos from './Todos.styles';
 
 import TodoItem from './components/TodoItem/TodoItem';
 import FilterButtons from './components/FilterButtons/FilterButtons';
 import FormAddTodo from './components/FormAddTodo/FormAddTodo';
 import { filterTodosSelector } from '../../redux/todos/todoSlice';
+import { useAppSelector } from '../../redux/store';
 
 const Todos: React.FC = () => {
-  const todos = useSelector(filterTodosSelector);
+  const todos = useAppSelector(filterTodosSelector);
 
   return (
     <StyleTodos>
       <div className="container">
         <FormAddTodo />
-        <FilterButtons todos={todos.todoList} filter={todos.filter} />
+        <FilterButtons count={todos.activeCount} />
         <ul className="todos-list">
-          {todos.todoList.map((todo) => (
+          {todos.filteredTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
         </ul>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+
 import TodoItemStyles from './TodoItem.styles';
+
 import Button from '../../../Button/Button';
 import type { TodoType } from '../../../../types/types';
-
 import { todoSliceActions } from '../../../../redux/todos/todoSlice';
 import { useAppDispatch } from '../../../../redux/store';
 

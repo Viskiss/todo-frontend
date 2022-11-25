@@ -1,15 +1,14 @@
-import { useAppDispatch } from '../../../../redux/store';
-import { todoSliceActions } from '../../../../redux/todos/todoSlice';
-import type { TodoType } from '../../../../types/types';
-import { FilterTodoENUM } from '../../../../types/types';
 import Button from '../../../Button/Button';
 
+import { useAppDispatch } from '../../../../redux/store';
+import { todoSliceActions } from '../../../../redux/todos/todoSlice';
+import { FilterTodoENUM } from '../../../../types/types';
+
 interface IFilterButtons {
-  todos: TodoType[];
-  filter: FilterTodoENUM;
+  count: number;
 }
 
-const FilterButtons: React.FC<IFilterButtons> = ({ todos, filter }) => {
+const FilterButtons: React.FC<IFilterButtons> = ({ count }) => {
   const dispatch = useAppDispatch();
 
   const filterTodos = (filterName: FilterTodoENUM) => {
@@ -18,17 +17,18 @@ const FilterButtons: React.FC<IFilterButtons> = ({ todos, filter }) => {
 
   return (
     <div>
-      {(Object.keys(FilterTodoENUM) as (keyof typeof FilterTodoENUM)[]).map(
-        (key) => (
-          <Button
-          key={key}
-            isActive={FilterTodoENUM[key] === filter}
-            onClick={() => filterTodos(FilterTodoENUM[key])}
-          >
-            {key} {FilterTodoENUM[key] === filter ? todos.length : ''}
-          </Button>
-        ),
-      )}
+      <Button
+        isActive={false}
+        onClick={() => filterTodos(FilterTodoENUM.ACTIVE)}
+      >
+        ACTIVE
+      </Button>
+      <Button
+        isActive={count > 0}
+        onClick={() => filterTodos(FilterTodoENUM.COMPLETED)}
+      >
+        COMPLETED {count}
+      </Button>
     </div>
   );
 };

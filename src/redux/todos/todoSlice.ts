@@ -5,7 +5,7 @@ import { FilterTodoENUM } from '../../types/types';
 
 const initialState = {
   todos: [] as TodoType[],
-  filter: FilterTodoENUM.ALL,
+  filter: FilterTodoENUM.ACTIVE,
 };
 
 const todoSlice = createSlice({
@@ -55,18 +55,22 @@ export const filterTodosSelector = createSelector(
   (store: { todoData: { todos: TodoType[] } }) => store.todoData.todos,
   (store: { todoData: { filter: FilterTodoENUM } }) => store.todoData.filter,
   (todos, filter) => {
-    const todoList = todos.filter((todo: { completed: boolean }) => {
-      switch (filter) {
-        case FilterTodoENUM.ACTIVE:
-          return !todo.completed;
-        case FilterTodoENUM.COMPLETED:
-          return todo.completed;
-        default:
-          return todos;
+    let count = 0;
+    let filteredTodos = todos.filter((item) => {
+      if (item.completed) {
+        count++;
       }
+      return { filteredTodos: count };
     });
-
-    return { todoList, filter };
+    if (filter === FilterTodoENUM.COMPLETED) {
+      filteredTodos = todos.filter((item) => item.completed);
+      return { filteredTodos, activeCount: count };
+    }
+    if (filter === FilterTodoENUM.ACTIVE) {
+      filteredTodos = todos.filter((item) => !item.completed);
+      return { filteredTodos, activeCount: count };
+    }
+    return { filteredTodos: todos, activeCount: count };
   },
 );
 
