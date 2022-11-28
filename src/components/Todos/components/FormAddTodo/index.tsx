@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+
 import StylesForm from './FormAddTodo.styles';
 
-import Button from '../../../Button/Button';
+import Button from '../../Button';
 
 import { todoSliceActions } from '../../../../redux/todos/todoSlice';
 import { useAppDispatch } from '../../../../redux/store';

@@ -1,8 +1,8 @@
 import StyleTodos from './Todos.styles';
 
-import TodoItem from './components/TodoItem/TodoItem';
-import FilterButtons from './components/FilterButtons/FilterButtons';
-import FormAddTodo from './components/FormAddTodo/FormAddTodo';
+import TodoItem from './components/TodoItem';
+import FilterButtons from './components/FilterButtons';
+import FormAddTodo from './components/FormAddTodo';
 import { filterTodosSelector } from '../../redux/todos/todoSlice';
 import { useAppSelector } from '../../redux/store';
 
@@ -13,9 +13,9 @@ const Todos: React.FC = () => {
     <StyleTodos>
       <div className="container">
         <FormAddTodo />
-        <FilterButtons count={todos.activeCount} />
+        <FilterButtons />
         <ul className="todos-list">
-          {todos.filteredTodos.map((todo) => (
+          {todos.filteredTodoList.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
         </ul>

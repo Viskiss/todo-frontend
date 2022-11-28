@@ -2,23 +2,26 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TodoType } from '../../types/types';
 import { FilterTodoENUM } from '../../types/types';
+import type { StateType } from '../store';
+import storage from '../../utility/storage';
 
-const initialState = {
-  todos: [] as TodoType[],
-  filter: FilterTodoENUM.ACTIVE,
-};
+const initialState = () => ({
+  todos: storage.todos.getItem() as TodoType[],
+  filter: storage.todosFilter.getItem() || FilterTodoENUM.ACTIVE,
+});
 
 const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    addTodo: (state, action: PayloadAction<string>) => {
+    addTodo: (state, { payload }: PayloadAction<string>) => {
       const newTodo: TodoType = {
         id: Date.now(),
-        value: action.payload,
+        value: payload,
         completed: false,
       };
       state.todos.push(newTodo);
+      storage.todos.setItem(state.todos);
     },
 
     deleteTodo: (state, { payload }: PayloadAction<number>) => {
@@ -45,32 +48,33 @@ const todoSlice = createSlice({
       state.todos[index].completed = payload.completed;
     },
 
-    filterTodo: (state, { payload }: PayloadAction<FilterTodoENUM>) => {
+    setFilter: (state, { payload }: PayloadAction<FilterTodoENUM>) => {
+      storage.todosFilter.setItem(payload);
       state.filter = payload;
     },
   },
 });
 
 export const filterTodosSelector = createSelector(
-  (store: { todoData: { todos: TodoType[] } }) => store.todoData.todos,
-  (store: { todoData: { filter: FilterTodoENUM } }) => store.todoData.filter,
+  (store: StateType) => store.todoData.todos,
+  (store: StateType) => store.todoData.filter,
   (todos, filter) => {
-    let count = 0;
-    let filteredTodos = todos.filter((item) => {
-      if (item.completed) {
-        count++;
+    let activeCount = 0;
+    const filteredTodoList = todos.filter((todo) => {
+      if (!todo.completed) {
+        activeCount++;
       }
-      return { filteredTodos: count };
+      switch (filter) {
+        case FilterTodoENUM.ACTIVE:
+          return !todo.completed;
+        case FilterTodoENUM.COMPLETED:
+          return todo.completed;
+        default:
+          return todos;
+      }
     });
-    if (filter === FilterTodoENUM.COMPLETED) {
-      filteredTodos = todos.filter((item) => item.completed);
-      return { filteredTodos, activeCount: count };
-    }
-    if (filter === FilterTodoENUM.ACTIVE) {
-      filteredTodos = todos.filter((item) => !item.completed);
-      return { filteredTodos, activeCount: count };
-    }
-    return { filteredTodos: todos, activeCount: count };
+
+    return { filteredTodoList, activeCount };
   },
 );
 
