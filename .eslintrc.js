@@ -46,6 +46,7 @@ module.exports = {
       afterOpening: 'never',
       beforeClosing: 'proportional-always',
     }],
+    'linebreak-style': 0,
     'jsx-quotes': ['error', 'prefer-double'],
     'react/prop-types': 'off',
     'react/no-unused-state': 2,

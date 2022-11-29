@@ -6,7 +6,7 @@ import type { StateType } from '../store';
 import storage from '../../utility/storage';
 
 const initialState = () => ({
-  todos: storage.todos.getItem() as TodoType[],
+  todos: storage.todos.getItem() || [] as TodoType[],
   filter: storage.todosFilter.getItem() || FilterTodoENUM.ACTIVE,
 });
 
@@ -27,6 +27,7 @@ const todoSlice = createSlice({
     deleteTodo: (state, { payload }: PayloadAction<number>) => {
       const index = state.todos.findIndex((item) => item.id === payload);
       state.todos.splice(index, 1);
+      storage.todos.setItem(state.todos);
     },
 
     completeTodo: (
@@ -35,6 +36,7 @@ const todoSlice = createSlice({
     ) => {
       const index = state.todos.findIndex((item) => item.id === payload.id);
       state.todos[index].completed = payload.completed;
+      storage.todos.setItem(state.todos);
     },
 
     editTodo: (
@@ -46,11 +48,12 @@ const todoSlice = createSlice({
       const index = state.todos.findIndex((item) => item.id === payload.id);
       state.todos[index].value = payload.value;
       state.todos[index].completed = payload.completed;
+      storage.todos.setItem(state.todos);
     },
 
     setFilter: (state, { payload }: PayloadAction<FilterTodoENUM>) => {
-      storage.todosFilter.setItem(payload);
       state.filter = payload;
+      storage.todosFilter.setItem(payload);
     },
   },
 });
@@ -74,7 +77,7 @@ export const filterTodosSelector = createSelector(
       }
     });
 
-    return { filteredTodoList, activeCount };
+    return { filteredTodoList, activeCount, completedCount: todos.length - activeCount };
   },
 );
 

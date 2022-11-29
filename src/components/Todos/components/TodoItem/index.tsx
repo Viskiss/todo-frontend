@@ -43,7 +43,7 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
       <input
         className="todo-item_input"
         type="text"
-        id={todo.id}
+        id={String(todo.id)}
         value={todoValue}
         onBlur={() => changeTodo(todo.id)}
         onChange={(event) => setTodoValue(event.target.value)}

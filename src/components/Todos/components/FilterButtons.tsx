@@ -25,8 +25,9 @@ const FilterButtons: React.FC = () => {
         isActive
         onClick={() => filterTodos(FilterTodoENUM.COMPLETED)}
       >
-        COMPLETED {count.filteredTodoList.length - count.activeCount}
+        COMPLETED {count.completedCount}
       </Button>
+
     </div>
   );
 };
