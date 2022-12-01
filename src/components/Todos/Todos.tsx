@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import StyleTodos from './Todos.styles';
 
 import TodoItem from './components/TodoItem';
@@ -20,13 +19,6 @@ const Todos: React.FC = () => {
     };
     getTodos();
   }, [dispatch]);
-
-  // async function getTodos() {
-  //   try {
-  //     const response = await TodosService.fetchTodos();
-  //     dispatch(todoSliceActions.getTodos(response.data));
-  //   } catch (e) { /* empty */ }
-  // }
 
   return (
     <StyleTodos>

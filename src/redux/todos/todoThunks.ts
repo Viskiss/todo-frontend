@@ -10,6 +10,15 @@ export const getTodos = createAsyncThunk('todos/getTodo', async (_, { rejectWith
   }
 });
 
+export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: number, { rejectWithValue }) => {
+  try {
+    const todo = await TodosService.deleteTodo(id);
+    return todo;
+  } catch (error) {
+    return rejectWithValue([]);
+  }
+});
+
 // const addTodo = createAsyncThunk('todo/addTodo', async (payload) => {
 //   const response = await fetch('http://localhost:3333/todos', {
 //     method: 'POST',
