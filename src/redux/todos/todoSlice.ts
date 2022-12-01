@@ -4,16 +4,26 @@ import type { TodoType } from '../../types/types';
 import { FilterTodoENUM } from '../../types/types';
 import type { StateType } from '../store';
 import storage from '../../utility/storage';
+import { getTodos } from './todoThunks';
 
 const initialState = () => ({
-  todos: storage.todos.getItem() || [] as TodoType[],
+  todos: [] as TodoType[],
   filter: storage.todosFilter.getItem() || FilterTodoENUM.ACTIVE,
+  loading: '',
+  error: '',
 });
 
 const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
+    getTodos: (state, { payload }: PayloadAction<TodoType[]>) => {
+      // eslint-disable-next-line no-console
+      console.log(payload);
+      state.todos = payload;
+      storage.todos.setItem(state.todos);
+    },
+
     addTodo: (state, { payload }: PayloadAction<string>) => {
       const newTodo: TodoType = {
         id: Date.now(),
@@ -56,6 +66,19 @@ const todoSlice = createSlice({
       storage.todosFilter.setItem(payload);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getTodos.fulfilled, (state, action) => {
+      if (action.payload) {
+        // state.todos = action;
+        storage.todos.setItem(state.todos);
+        // eslint-disable-next-line no-console
+        console.log(action);
+        // state.todos = action.payload;
+        state.loading = 'end';
+      }
+    });
+  },
+
 });
 
 export const filterTodosSelector = createSelector(
