@@ -4,7 +4,7 @@ import type { TodoType } from '../../types/types';
 import { FilterTodoENUM } from '../../types/types';
 import type { StateType } from '../store';
 import storage from '../../utility/storage';
-import { getTodos } from './todoThunks';
+import { addTodo, deleteTodo, getTodos, updateTodo } from './todoThunks';
 
 const initialState = () => ({
   todos: [] as TodoType[],
@@ -17,49 +17,6 @@ const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    getTodos: (state, { payload }: PayloadAction<TodoType[]>) => {
-      // eslint-disable-next-line no-console
-      console.log(payload);
-      state.todos = payload;
-      storage.todos.setItem(state.todos);
-    },
-
-    addTodo: (state, { payload }: PayloadAction<string>) => {
-      const newTodo: TodoType = {
-        id: Date.now(),
-        value: payload,
-        completed: false,
-      };
-      state.todos.push(newTodo);
-      storage.todos.setItem(state.todos);
-    },
-
-    deleteTodo: (state, { payload }: PayloadAction<number>) => {
-      const index = state.todos.findIndex((item) => item.id === payload);
-      state.todos.splice(index, 1);
-      storage.todos.setItem(state.todos);
-    },
-
-    completeTodo: (
-      state,
-      { payload }: PayloadAction<{ id: number; completed: boolean }>,
-    ) => {
-      const index = state.todos.findIndex((item) => item.id === payload.id);
-      state.todos[index].completed = payload.completed;
-      storage.todos.setItem(state.todos);
-    },
-
-    editTodo: (
-      state,
-      {
-        payload,
-      }: PayloadAction<{ id: number; value: string; completed: boolean }>,
-    ) => {
-      const index = state.todos.findIndex((item) => item.id === payload.id);
-      state.todos[index].value = payload.value;
-      state.todos[index].completed = payload.completed;
-      storage.todos.setItem(state.todos);
-    },
 
     setFilter: (state, { payload }: PayloadAction<FilterTodoENUM>) => {
       state.filter = payload;
@@ -69,11 +26,30 @@ const todoSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getTodos.fulfilled, (state, action) => {
       if (action.payload) {
-        // state.todos = action;
-        storage.todos.setItem(state.todos);
-        // eslint-disable-next-line no-console
-        console.log(action);
-        // state.todos = action.payload;
+        state.todos = action.payload;
+        state.loading = 'end';
+      }
+    });
+
+    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+        state.loading = 'end';
+      }
+    });
+
+    builder.addCase(updateTodo.fulfilled, (state, action) => {
+      if (action.payload) {
+        const index = state.todos.findIndex((item) => item.id === action.payload.id);
+        state.todos[index].value = action.payload.value;
+        state.todos[index].completed = action.payload.completed;
+        state.loading = 'end';
+      }
+    });
+
+    builder.addCase(addTodo.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.todos.push(action.payload);
         state.loading = 'end';
       }
     });
@@ -100,7 +76,7 @@ export const filterTodosSelector = createSelector(
       }
     });
 
-    return { filteredTodoList, activeCount, completedCount: todos.length - activeCount };
+    return { filter, filteredTodoList, activeCount, completedCount: todos.length - activeCount };
   },
 );
 

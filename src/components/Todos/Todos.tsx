@@ -7,18 +7,15 @@ import FormAddTodo from './components/FormAddTodo';
 import { filterTodosSelector, todoSliceActions } from '../../redux/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import TodosService from '../../api/todoApi';
+import { getTodos } from '../../redux/todos/todoThunks';
 
 const Todos: React.FC = () => {
-  const todos = useAppSelector(filterTodosSelector);
+  const { filteredTodoList, filter } = useAppSelector(filterTodosSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getTodos = async () => {
-      const response = await TodosService.fetchTodos();
-      dispatch(todoSliceActions.getTodos(response.data));
-    };
-    getTodos();
-  }, [dispatch]);
+    dispatch(getTodos(filter));
+  }, [dispatch, filter]);
 
   return (
     <StyleTodos>
@@ -26,7 +23,7 @@ const Todos: React.FC = () => {
         <FormAddTodo />
         <FilterButtons />
         <ul className="todos-list">
-          {todos.filteredTodoList.map((todo) => (
+          {filteredTodoList.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
         </ul>

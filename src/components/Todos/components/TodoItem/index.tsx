@@ -6,6 +6,7 @@ import Button from '../../Button';
 import type { TodoType } from '../../../../types/types';
 import { todoSliceActions } from '../../../../redux/todos/todoSlice';
 import { useAppDispatch } from '../../../../redux/store';
+import { deleteTodo, updateTodo } from '../../../../redux/todos/todoThunks';
 
 interface ITodoItem {
   todo: TodoType;
@@ -17,19 +18,19 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
   const dispatch = useAppDispatch();
 
   const removeTodo = (id: number) => {
-    dispatch(todoSliceActions.deleteTodo(id));
+    dispatch(deleteTodo(id));
   };
 
   const completeTodo = (id: number) => {
-    dispatch(todoSliceActions.completeTodo({ id, completed: !todo.completed }));
+    dispatch(updateTodo({ id, completed: !todo.completed, value: todo.value }));
   };
 
   const changeTodo = (id: number) => {
     if (!todoValue) {
-      dispatch(todoSliceActions.deleteTodo(id));
+      dispatch(deleteTodo(id));
     } else {
       dispatch(
-        todoSliceActions.editTodo({
+        updateTodo({
           id,
           value: todoValue,
           completed: todo.completed,

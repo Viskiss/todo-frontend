@@ -1,53 +1,41 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { TodoType, FilterTodoENUM } from '../../types/types';
+
 import TodosService from '../../api/todoApi';
 
-export const getTodos = createAsyncThunk('todos/getTodo', async (_, { rejectWithValue }) => {
+export const getTodos = createAsyncThunk('todos/getTodo', async (filter?: FilterTodoENUM) => {
   try {
-    const todos = await TodosService.fetchTodos();
-    return todos;
+    const todos = await TodosService.fetchTodos(filter);
+    return todos.data;
   } catch (error) {
-    return rejectWithValue([]);
+    return [];
   }
 });
 
 export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: number, { rejectWithValue }) => {
   try {
-    const todo = await TodosService.deleteTodo(id);
-    return todo;
+    await TodosService.deleteTodo(id);
+    return id;
   } catch (error) {
     return rejectWithValue([]);
   }
 });
 
-// const addTodo = createAsyncThunk('todo/addTodo', async (payload) => {
-//   const response = await fetch('http://localhost:3333/todos', {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ value: payload.value }),
-//   });
-//   if (response.ok) {
-//     const todo = await response.json();
-//     return todo;
-//   }
-// });
+export const updateTodo = createAsyncThunk('todos/updateTodo', async (todoData: TodoType, { rejectWithValue }) => {
+  const { id, ...fields } = todoData;
+  try {
+    const todo = await TodosService.updateTodo(id, fields);
+    return todo.data;
+  } catch (error) {
+    return rejectWithValue([]);
+  }
+});
 
-// const updateTodo = createAsyncThunk('todo/updateTodo', async (payload) => {
-//   const response = await fetch('http://localhost:3333/todos', {
-//     method: 'PACH',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ value: payload.value, completed: payload.completed }),
-//   });
-//   if (response.ok) {
-//     const todo = await response.json();
-//     return todo;
-//   }
-// });
-
-// const deleteTodo = createAsyncThunk('todo/deleteTodo', async (payload) => {
-//   const response = await fetch('http://localhost:3333/todos', {
-//     method: 'DELETE',
-//   });
-//   if (response.ok) {
-//     return { id: payload.id };
-//   }
-// });
+export const addTodo = createAsyncThunk('todos/addTodo', async (value: string, { rejectWithValue }) => {
+  try {
+    const todo = await TodosService.addTodo(value);
+    return todo.data;
+  } catch (error) {
+    return rejectWithValue([]);
+  }
+});
