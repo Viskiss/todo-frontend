@@ -31,18 +31,17 @@ const todoSlice = createSlice({
       }
     });
 
-    builder.addCase(getTodos.pending, (state, action) => {
-      if (action.payload) {
-        state.loading = true;
-      }
-    });
-
-    // builder.addCase(deleteTodo.fulfilled, (state, action) => {
+    // builder.addCase(getTodos.pending, (state, action) => {
     //   if (action.payload) {
-    //     state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-    //     state.loading = 'end';
+    //     state.loading = true;
     //   }
     // });
+
+    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+      }
+    });
 
     builder.addCase(updateTodo.fulfilled, (state, action) => {
       if (action.payload) {
