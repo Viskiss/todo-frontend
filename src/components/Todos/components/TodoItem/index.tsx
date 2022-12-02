@@ -4,7 +4,6 @@ import TodoItemStyles from './TodoItem.styles';
 
 import Button from '../../Button';
 import type { TodoType } from '../../../../types/types';
-import { todoSliceActions } from '../../../../redux/todos/todoSlice';
 import { useAppDispatch } from '../../../../redux/store';
 import { deleteTodo, updateTodo } from '../../../../redux/todos/todoThunks';
 

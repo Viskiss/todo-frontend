@@ -9,7 +9,7 @@ import { addTodo, deleteTodo, getTodos, updateTodo } from './todoThunks';
 const initialState = () => ({
   todos: [] as TodoType[],
   filter: storage.todosFilter.getItem() || FilterTodoENUM.ACTIVE,
-  loading: '',
+  loading: false,
   error: '',
 });
 
@@ -27,30 +27,34 @@ const todoSlice = createSlice({
     builder.addCase(getTodos.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos = action.payload;
-        state.loading = 'end';
+        state.loading = false;
       }
     });
 
-    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+    builder.addCase(getTodos.pending, (state, action) => {
       if (action.payload) {
-        state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-        state.loading = 'end';
+        state.loading = true;
       }
     });
+
+    // builder.addCase(deleteTodo.fulfilled, (state, action) => {
+    //   if (action.payload) {
+    //     state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+    //     state.loading = 'end';
+    //   }
+    // });
 
     builder.addCase(updateTodo.fulfilled, (state, action) => {
       if (action.payload) {
         const index = state.todos.findIndex((item) => item.id === action.payload.id);
         state.todos[index].value = action.payload.value;
         state.todos[index].completed = action.payload.completed;
-        state.loading = 'end';
       }
     });
 
     builder.addCase(addTodo.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos.push(action.payload);
-        state.loading = 'end';
       }
     });
   },
