@@ -1,14 +1,13 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TodoType } from '../../types/types';
 import { FilterTodoENUM } from '../../types/types';
-import type { StateType } from '../store';
 import storage from '../../utility/storage';
-import { addTodo, deleteTodo, getTodos, updateTodo } from './todoThunks';
+import { createTodoThunk, deleteTodoThunk, getTodosThunk, updateTodoThunk } from './todoThunks';
 
 const initialState = () => ({
   todos: [] as TodoType[],
-  filter: storage.todosFilter.getItem() || FilterTodoENUM.ACTIVE,
+  filter: FilterTodoENUM.ACTIVE,
   loading: false,
   error: '',
 });
@@ -24,7 +23,7 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getTodos.fulfilled, (state, action) => {
+    builder.addCase(getTodosThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos = action.payload;
         state.loading = false;
@@ -37,21 +36,21 @@ const todoSlice = createSlice({
     //   }
     // });
 
-    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+    builder.addCase(deleteTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos = state.todos.filter((todo) => todo.id !== action.payload);
       }
     });
 
-    builder.addCase(updateTodo.fulfilled, (state, action) => {
+    builder.addCase(updateTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
         const index = state.todos.findIndex((item) => item.id === action.payload.id);
-        state.todos[index].value = action.payload.value;
+        state.todos[index].title = action.payload.title;
         state.todos[index].completed = action.payload.completed;
       }
     });
 
-    builder.addCase(addTodo.fulfilled, (state, action) => {
+    builder.addCase(createTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos.push(action.payload);
       }
@@ -59,29 +58,6 @@ const todoSlice = createSlice({
   },
 
 });
-
-export const filterTodosSelector = createSelector(
-  (store: StateType) => store.todoData.todos,
-  (store: StateType) => store.todoData.filter,
-  (todos, filter) => {
-    let activeCount = 0;
-    const filteredTodoList = todos.filter((todo) => {
-      if (!todo.completed) {
-        activeCount++;
-      }
-      switch (filter) {
-        case FilterTodoENUM.ACTIVE:
-          return !todo.completed;
-        case FilterTodoENUM.COMPLETED:
-          return todo.completed;
-        default:
-          return todos;
-      }
-    });
-
-    return { filter, filteredTodoList, activeCount, completedCount: todos.length - activeCount };
-  },
-);
 
 export const todoSliceActions = todoSlice.actions;
 

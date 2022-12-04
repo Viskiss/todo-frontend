@@ -5,33 +5,33 @@ import TodoItemStyles from './TodoItem.styles';
 import Button from '../../Button';
 import type { TodoType } from '../../../../types/types';
 import { useAppDispatch } from '../../../../redux/store';
-import { deleteTodo, updateTodo } from '../../../../redux/todos/todoThunks';
+import { deleteTodoThunk, updateTodoThunk } from '../../../../redux/todos/todoThunks';
 
 interface ITodoItem {
   todo: TodoType;
 }
 
 const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
-  const [todoValue, setTodoValue] = useState(todo.value);
+  const [todoValue, setTodoValue] = useState(todo.title);
 
   const dispatch = useAppDispatch();
 
   const removeTodo = (id: number) => {
-    dispatch(deleteTodo(id));
+    dispatch(deleteTodoThunk(id));
   };
 
   const completeTodo = (id: number) => {
-    dispatch(updateTodo({ id, completed: !todo.completed, value: todo.value }));
+    dispatch(updateTodoThunk({ id, completed: !todo.completed, title: todo.title }));
   };
 
   const changeTodo = (id: number) => {
     if (!todoValue) {
-      dispatch(deleteTodo(id));
+      dispatch(deleteTodoThunk(id));
     } else {
       dispatch(
-        updateTodo({
+        updateTodoThunk({
           id,
-          value: todoValue,
+          title: todoValue,
           completed: todo.completed,
         }),
       );

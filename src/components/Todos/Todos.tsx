@@ -4,17 +4,17 @@ import StyleTodos from './Todos.styles';
 import TodoItem from './components/TodoItem';
 import FilterButtons from './components/FilterButtons';
 import FormAddTodo from './components/FormAddTodo';
-import { filterTodosSelector } from '../../redux/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getTodos } from '../../redux/todos/todoThunks';
+import { getTodosThunk } from '../../redux/todos/todoThunks';
 
 const Todos: React.FC = () => {
-  const { filteredTodoList, filter } = useAppSelector(filterTodosSelector);
   // const { loading } = useAppSelector((state) => state.todoData.loading)
+  const todos = useAppSelector((state) => state.todoData.todos);
+  const filter = useAppSelector((state) => state.todoData.filter);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getTodos(filter));
+    dispatch(getTodosThunk(filter));
   }, [dispatch, filter]);
 
   // if (loading) return <p>Loading...</p>;
@@ -25,7 +25,7 @@ const Todos: React.FC = () => {
         <FormAddTodo />
         <FilterButtons />
         <ul className="todos-list">
-          {filteredTodoList.map((todo) => (
+          {todos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
         </ul>

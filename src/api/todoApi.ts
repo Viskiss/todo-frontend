@@ -4,15 +4,15 @@ import api from './api';
 const todosPath = '/todos';
 
 const fetchTodos = (filter = FilterTodoENUM.ACTIVE) => {
-  return api.get<TodoType>(todosPath, { params: { filter } });
+  return api.get<TodoType[]>(todosPath, { params: { filter } });
 };
 
 const createTodo = (title: string) => {
-  return api.post<TodoType>(todosPath, { value: title });
+  return api.post<TodoType>(todosPath, { title });
 };
 
 const updateTodo = (id: number, fields: Omit<TodoType, 'id'>) => {
-  return api.patch<TodoType>(`${todosPath}/${id}`, { value: fields.value, completed: fields.completed });
+  return api.patch<TodoType>(`${todosPath}/${id}`, { title: fields.title, completed: fields.completed });
 };
 
 const deleteTodo = (id: number) => {
