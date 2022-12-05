@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getTodosThunk } from '../../redux/todos/todoThunks';
 
 const Todos: React.FC = () => {
-  // const { loading } = useAppSelector((state) => state.todoData.loading)
+  const error = useAppSelector((state) => state.todoData.error);
   const todos = useAppSelector((state) => state.todoData.todos);
   const filter = useAppSelector((state) => state.todoData.filter);
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ const Todos: React.FC = () => {
     dispatch(getTodosThunk(filter));
   }, [dispatch, filter]);
 
-  // if (loading) return <p>Loading...</p>;
+  if (error) return (<p> {error}</p>);
 
   return (
     <StyleTodos>

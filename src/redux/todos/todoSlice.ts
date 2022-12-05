@@ -8,7 +8,6 @@ import { createTodoThunk, deleteTodoThunk, getTodosThunk, updateTodoThunk } from
 const initialState = () => ({
   todos: [] as TodoType[],
   filter: FilterTodoENUM.ACTIVE,
-  loading: false,
   error: '',
 });
 
@@ -26,20 +25,25 @@ const todoSlice = createSlice({
     builder.addCase(getTodosThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos = action.payload;
-        state.loading = false;
       }
     });
 
-    // builder.addCase(getTodos.pending, (state, action) => {
-    //   if (action.payload) {
-    //     state.loading = true;
-    //   }
-    // });
+    builder.addCase(getTodosThunk.rejected, (state, action) => {
+      // eslint-disable-next-line no-console
+      console.log(action.error.message);
+      state.error = action.error.message!;
+    });
 
     builder.addCase(deleteTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos = state.todos.filter((todo) => todo.id !== action.payload);
       }
+    });
+
+    builder.addCase(deleteTodoThunk.rejected, (state, action) => {
+      // eslint-disable-next-line no-console
+      console.log(action.error.message);
+      state.error = action.error.message!;
     });
 
     builder.addCase(updateTodoThunk.fulfilled, (state, action) => {
@@ -50,10 +54,22 @@ const todoSlice = createSlice({
       }
     });
 
+    builder.addCase(updateTodoThunk.rejected, (state, action) => {
+      // eslint-disable-next-line no-console
+      console.log(action.error.message);
+      state.error = action.error.message!;
+    });
+
     builder.addCase(createTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
         state.todos.push(action.payload);
       }
+    });
+
+    builder.addCase(createTodoThunk.rejected, (state, action) => {
+      // eslint-disable-next-line no-console
+      console.log(action.error.message);
+      state.error = action.error.message!;
     });
   },
 
