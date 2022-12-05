@@ -64,6 +64,7 @@ module.exports = {
     'object-curly-newline': 'off',
     'no-use-before-define': 'off',
     'no-shadow': 'off',
+    "no-underscore-dangle": 'off',
     'space-before-function-paren': ['error', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
     'no-restricted-syntax': 'off',
     camelcase: 'off',

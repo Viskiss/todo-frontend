@@ -5,7 +5,10 @@ import TodoItemStyles from './TodoItem.styles';
 import Button from '../../Button';
 import type { TodoType } from '../../../../types/types';
 import { useAppDispatch } from '../../../../redux/store';
-import { deleteTodoThunk, updateTodoThunk } from '../../../../redux/todos/todoThunks';
+import {
+  deleteTodoThunk,
+  updateTodoThunk,
+} from '../../../../redux/todos/todoThunks';
 
 interface ITodoItem {
   todo: TodoType;
@@ -16,21 +19,23 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
 
   const dispatch = useAppDispatch();
 
-  const removeTodo = (id: number) => {
-    dispatch(deleteTodoThunk(id));
+  const removeTodo = (_id: number) => {
+    dispatch(deleteTodoThunk(_id));
   };
 
-  const completeTodo = (id: number) => {
-    dispatch(updateTodoThunk({ id, completed: !todo.completed, title: todo.title }));
+  const completeTodo = (_id: number) => {
+    dispatch(
+      updateTodoThunk({ _id, completed: !todo.completed, title: todo.title }),
+    );
   };
 
-  const changeTodo = (id: number) => {
+  const changeTodo = (_id: number) => {
     if (!todoValue) {
-      dispatch(deleteTodoThunk(id));
+      dispatch(deleteTodoThunk(_id));
     } else {
       dispatch(
         updateTodoThunk({
-          id,
+          _id,
           title: todoValue,
           completed: todo.completed,
         }),
@@ -43,16 +48,16 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
       <input
         className="todo-item_input"
         type="text"
-        id={String(todo.id)}
+        id={String(todo._id)}
         value={todoValue}
-        onBlur={() => changeTodo(todo.id)}
+        onBlur={() => changeTodo(todo._id)}
         onChange={(event) => setTodoValue(event.target.value)}
       />
       <div className="todo-item_buttons">
-        <Button isActive={false} onClick={() => removeTodo(todo.id)}>
+        <Button isActive={false} onClick={() => removeTodo(todo._id)}>
           Delete
         </Button>
-        <Button isActive={false} onClick={() => completeTodo(todo.id)}>
+        <Button isActive={false} onClick={() => completeTodo(todo._id)}>
           Completed
         </Button>
       </div>

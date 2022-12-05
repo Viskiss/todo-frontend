@@ -31,9 +31,10 @@ export const deleteTodoThunk = createAsyncThunk('todos/deleteTodo', async (id: n
 });
 
 export const updateTodoThunk = createAsyncThunk('todos/updateTodo', async (todoData: TodoType, { rejectWithValue }) => {
-  const { id, ...fields } = todoData;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const { _id, ...fields } = todoData;
   try {
-    const todo = await todoApi.updateTodo(id, fields);
+    const todo = await todoApi.updateTodo(_id, fields);
     return todo.data;
   } catch (err) {
     const error = err as AxiosError;

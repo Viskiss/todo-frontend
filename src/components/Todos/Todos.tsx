@@ -26,7 +26,7 @@ const Todos: React.FC = () => {
         <FilterButtons />
         <ul className="todos-list">
           {todos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
+            <TodoItem key={todo._id} todo={todo} />
           ))}
         </ul>
       </div>

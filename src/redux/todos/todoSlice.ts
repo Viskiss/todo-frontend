@@ -36,7 +36,7 @@ const todoSlice = createSlice({
 
     builder.addCase(deleteTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
-        state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+        state.todos = state.todos.filter((todo) => todo._id !== action.payload);
       }
     });
 
@@ -48,7 +48,7 @@ const todoSlice = createSlice({
 
     builder.addCase(updateTodoThunk.fulfilled, (state, action) => {
       if (action.payload) {
-        const index = state.todos.findIndex((item) => item.id === action.payload.id);
+        const index = state.todos.findIndex((item) => item._id === action.payload._id);
         state.todos[index].title = action.payload.title;
         state.todos[index].completed = action.payload.completed;
       }
